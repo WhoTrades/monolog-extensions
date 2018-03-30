@@ -1,0 +1,15 @@
+{
+  "name": "whotrades/monolog-extensions",
+  "type": "library",
+  "author": "Anton Gorlanov (antonxacc@gmail.com)",
+  "description": "Monolog extensions",
+  "autoload": {
+    "psr-4": {
+      "whotrades\\monolog-extensions\\": ""
+    }
+  },
+  "require": {
+    "php": ">=7.0",
+    "monolog/monolog": "^1.23"
+  }
+}
