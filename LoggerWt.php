@@ -15,4 +15,8 @@ class LoggerWt extends Logger
     const CONTEXT_PROCESS = 'process';
     const CONTEXT_STATUS = 'status';
     const CONTEXT_REASON = 'reason';
+    const CONTEXT_CONTEXT = 'context';
+
+    const DEFAULT_AUTHOR = 'all';
+    const DEFAULT_STATUS = 'all';
 }
