@@ -1,6 +1,6 @@
 <?php
 /**
- * @package whotrades\monolog-extensions
+ * @author Anton Gorlanov
  */
 namespace whotrades\MonologExtensions\Processor;
 
