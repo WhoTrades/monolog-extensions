@@ -19,4 +19,28 @@ class LoggerWt extends Logger
 
     const DEFAULT_AUTHOR = 'all';
     const DEFAULT_STATUS = 'all';
+
+    /**
+     * @param array $array
+     *
+     * @return string
+     */
+    public static function arrayToString(array $array)
+    {
+        foreach ($array as $key => &$value) {
+            if (is_array($value)) {
+                $value = self::arrayToString($value);
+            } elseif (is_object($value)) {
+                if (method_exists($value, '__toString')) {
+                    $value = (string) $value;
+                } else {
+                    $value = 'Class: ' . get_class($value);
+                }
+            }
+
+            $value = (is_int($key) ? $value : ($key . '=' . $value));
+        }
+
+        return '[' . implode(', ', $array) . ']';
+    }
 }
