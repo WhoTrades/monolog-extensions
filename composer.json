@@ -5,7 +5,7 @@
   "description": "Monolog extensions",
   "autoload": {
     "psr-4": {
-      "whotrades\\monolog-extensions\\": ""
+      "whotrades\\MonologExtensions\\": ""
     }
   },
   "require": {
