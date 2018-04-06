@@ -19,7 +19,7 @@ class LoggerWt extends Logger
     const CONTEXT_RETRY_TIME = 'retry_time';
 
     const DEFAULT_AUTHOR = 'all';
-    const DEFAULT_STATUS = 'all';
+    const DEFAULT_STATUS = 'unknown';
 
     /**
      * @param array $array
