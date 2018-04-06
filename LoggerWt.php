@@ -16,6 +16,7 @@ class LoggerWt extends Logger
     const CONTEXT_STATUS = 'status';
     const CONTEXT_REASON = 'reason';
     const CONTEXT_CONTEXT = 'context';
+    const CONTEXT_RETRY_TIME = 'retry_time';
 
     const DEFAULT_AUTHOR = 'all';
     const DEFAULT_STATUS = 'all';
