@@ -29,7 +29,7 @@ class LoggerWt extends Logger
      */
     public static function arrayToString(array $array, $coverToBrackets = null)
     {
-        $coverToBrackets = $coverToBrackets ?? false;
+        $coverToBrackets = $coverToBrackets ?? true;
 
         foreach ($array as $key => &$value) {
             if (is_array($value)) {
