@@ -23,11 +23,14 @@ class LoggerWt extends Logger
 
     /**
      * @param array $array
+     * @param bool $coverToBrackets
      *
      * @return string
      */
-    public static function arrayToString(array $array)
+    public static function arrayToString(array $array, $coverToBrackets = null)
     {
+        $coverToBrackets = $coverToBrackets ?? false;
+
         foreach ($array as $key => &$value) {
             if (is_array($value)) {
                 $value = self::arrayToString($value);
@@ -42,6 +45,10 @@ class LoggerWt extends Logger
             $value = (is_int($key) ? $value : ($key . '=' . $value));
         }
 
-        return '[' . implode(', ', $array) . ']';
+        if ($coverToBrackets) {
+            return '[' . implode(', ', $array) . ']';
+        }
+
+        return implode(', ', $array);
     }
 }
