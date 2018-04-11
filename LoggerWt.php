@@ -8,18 +8,21 @@ use Monolog\Logger;
 
 class LoggerWt extends Logger
 {
-    const CONTEXT_AUTHOR = 'author'; // ag: author of log
+    const CONTEXT_AUTHOR = 'author'; // ag: Author of log
     const CONTEXT_EXCEPTION = 'exception'; // ag: Object of type \Throwable
     const CONTEXT_DUMP = 'dump'; // ag: Force send log to sentry
     const CONTEXT_COLLECT_TRACE = 'collect_trace'; // ag: Add to log collected trace
-    const CONTEXT_PROCESS = 'process';
-    const CONTEXT_STATUS = 'status';
-    const CONTEXT_REASON = 'reason';
-    const CONTEXT_CONTEXT = 'context';
-    const CONTEXT_RETRY_TIME = 'retry_time';
+    const CONTEXT_PROCESS = 'process'; // ag: Use for formatting message
+    const CONTEXT_STATUS = 'status'; // ag: Use for formatting message
+    const CONTEXT_RETRY_TIME = 'retry_time'; // ag: Use for formatting message
+    const CONTEXT_REASON = 'reason'; // ag: Use for formatting message
+    const CONTEXT_CONTEXT = 'context'; // ag: Use for additional leveling of context
+
+    const PROCESS_STATUS_RETRY = 'retry';
 
     const DEFAULT_AUTHOR = 'all';
     const DEFAULT_STATUS = 'unknown';
+    const DEFAULT_RETRY_TIME = 'unknown';
 
     /**
      * @param array $array
