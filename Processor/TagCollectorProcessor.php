@@ -44,10 +44,16 @@ class TagCollectorProcessor
      */
     public function __invoke(array $record)
     {
+        // ag: Collect tags from context
+        if (isset($record['context']['tags'])) {
+            $this->addTags((array) $record['context']['tags']);
+        }
+
         if (!isset($record['extra']['tags'])) {
             $record['extra']['tags'] = [];
         }
 
+        // ag: Add tags to extra
         $record['extra']['tags'] = array_merge((array) $record['extra']['tags'], (array) $this->tags);
 
         return $record;

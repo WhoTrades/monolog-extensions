@@ -17,6 +17,7 @@ class LoggerWt extends Logger
     const CONTEXT_RETRY_TIME = 'retry_time'; // ag: Use for formatting message
     const CONTEXT_REASON = 'reason'; // ag: Use for formatting message
     const CONTEXT_CONTEXT = 'context'; // ag: Use for additional leveling of context
+    const CONTEXT_TAGS = 'tags'; // ag: Tags for collecting with Processor\TagCollectorProcessor
 
     const PROCESS_STATUS_RETRY = 'retry';
 
