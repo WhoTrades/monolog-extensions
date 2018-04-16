@@ -19,6 +19,8 @@ class LoggerWt extends Logger
     const CONTEXT_CONTEXT = 'context'; // ag: Use for additional leveling of context
     const CONTEXT_TAGS = 'tags'; // ag: Tags for collecting with Processor\TagCollectorProcessor
 
+    const TAG_LOGGER_NAME = 'logger';
+
     const PROCESS_STATUS_RETRY = 'retry';
 
     const DEFAULT_AUTHOR = 'all';
