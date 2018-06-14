@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Anton Gorlanov
+ * @author Anton Gorlanov <antonxacc@gmail.com>
  */
 namespace whotrades\MonologExtensions\Processor;
 
@@ -30,18 +30,28 @@ class LoggerNameProcessor
      */
     public function __invoke(array $record)
     {
-        if (!isset($record['extra']['tags'])) {
-            $record['extra']['tags'] = [];
+        if (!isset($record['extra'][LoggerWt::CONTEXT_TAGS])) {
+            $record['extra'][LoggerWt::CONTEXT_TAGS] = [];
         }
 
         // ag: Add tag logger to extra
-        if (isset($record['extra']['tags'][LoggerWt::TAG_LOGGER_NAME])) {
-            $record['extra']['tags'][LoggerWt::TAG_LOGGER_NAME] = $this->loggerName;
+        if (isset($record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_LOGGER_NAME])) {
+            // ag: Change existed name
+            $record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_LOGGER_NAME] = $this->loggerName;
         } else {
-            $record['extra']['tags'] = array_merge([LoggerWt::TAG_LOGGER_NAME => $this->loggerName], (array) $record['extra']['tags']);
+            // ag: Set logger name to beginning of tags array
+            $record['extra'][LoggerWt::CONTEXT_TAGS] = [LoggerWt::TAG_LOGGER_NAME => $this->loggerName] + $record['extra'][LoggerWt::CONTEXT_TAGS];
         }
 
         return $record;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLoggerName()
+    {
+        return $this->loggerName;
     }
 
     /**

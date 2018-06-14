@@ -1,8 +1,10 @@
 <?php
 /**
- * @author Anton Gorlanov
+ * @author Anton Gorlanov <antonxacc@gmail.com>
  */
 namespace whotrades\MonologExtensions\Processor;
+
+use whotrades\MonologExtensions\LoggerWt;
 
 class TagCollectorProcessor
 {
@@ -45,16 +47,16 @@ class TagCollectorProcessor
     public function __invoke(array $record)
     {
         // ag: Collect tags from context
-        if (isset($record['context']['tags'])) {
-            $this->addTags((array) $record['context']['tags']);
+        if (isset($record['context'][LoggerWt::CONTEXT_TAGS])) {
+            $this->addTags((array) $record['context'][LoggerWt::CONTEXT_TAGS]);
         }
 
-        if (!isset($record['extra']['tags'])) {
-            $record['extra']['tags'] = [];
+        if (!isset($record['extra'][LoggerWt::CONTEXT_TAGS])) {
+            $record['extra'][LoggerWt::CONTEXT_TAGS] = [];
         }
 
         // ag: Add tags to extra
-        $record['extra']['tags'] = array_merge((array) $record['extra']['tags'], (array) $this->tags);
+        $record['extra'][LoggerWt::CONTEXT_TAGS] = array_merge((array) $record['extra'][LoggerWt::CONTEXT_TAGS], (array) $this->tags);
 
         return $record;
     }

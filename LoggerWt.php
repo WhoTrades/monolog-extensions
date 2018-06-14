@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Anton Gorlanov
+ * @author Anton Gorlanov <antonxacc@gmail.com>
  */
 namespace whotrades\MonologExtensions;
 
@@ -18,6 +18,8 @@ class LoggerWt extends Logger
     const CONTEXT_REASON = 'reason'; // ag: Use for formatting message
     const CONTEXT_CONTEXT = 'context'; // ag: Use for additional leveling of context
     const CONTEXT_TAGS = 'tags'; // ag: Tags for collecting with Processor\TagCollectorProcessor
+    const CONTEXT_OPERATIONS = 'operations'; // ag: Operations for processing with Processor\OperationProcessor
+    const CONTEXT_FINISH_LOGGING = 'finish_logging'; // ag: Context flag for getting additional information from processors while destructing
 
     const TAG_LOGGER_NAME = 'logger';
 
@@ -26,6 +28,14 @@ class LoggerWt extends Logger
     const DEFAULT_AUTHOR = 'all';
     const DEFAULT_STATUS = 'unknown';
     const DEFAULT_RETRY_TIME = 'unknown';
+
+    /**
+     * @return void
+     */
+    public function __destruct()
+    {
+        $this->debug('Finish logging', [self::CONTEXT_FINISH_LOGGING => true]);
+    }
 
     /**
      * @param array $array
