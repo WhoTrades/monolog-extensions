@@ -24,7 +24,9 @@ class OperationProcessor
      */
     public function __invoke(array $record)
     {
-        if (!isset($record['context'][LoggerWt::CONTEXT_OPERATIONS]) || !is_array($record['context'][LoggerWt::CONTEXT_OPERATIONS])) {
+        if ((!isset($record['context'][LoggerWt::CONTEXT_OPERATIONS])
+                || !is_array($record['context'][LoggerWt::CONTEXT_OPERATIONS])
+            ) && empty($record['context'][LoggerWt::CONTEXT_FINISH_LOGGING])) {
             return $record;
         }
 
