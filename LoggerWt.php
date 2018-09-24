@@ -5,6 +5,7 @@
 namespace whotrades\MonologExtensions;
 
 use Monolog\Logger;
+use whotrades\MonologExtensions\Handler;
 
 class LoggerWt extends Logger
 {
@@ -35,6 +36,22 @@ class LoggerWt extends Logger
     public function __destruct()
     {
         $this->debug('Finish logging', [self::CONTEXT_FINISH_LOGGING => true]);
+    }
+
+    /**
+     * Return the last captured Raven event's ID or null if none available.
+     *
+     * @return string | null
+     */
+    public function getLastRavenEventID()
+    {
+        foreach ($this->handlers as $handler) {
+            if ($handler instanceof Handler\RavenHandler) {
+                return $handler->getLastEventID();
+            }
+        }
+
+        return null;
     }
 
     /**
