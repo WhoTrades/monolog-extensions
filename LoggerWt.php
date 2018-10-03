@@ -45,7 +45,6 @@ class LoggerWt extends Logger
     public function addRecord($level, $message, array $context = null)
     {
         $context = $context ?? [];
-        $context[self::CONTEXT_AUTHOR] = $context[self::CONTEXT_AUTHOR] ?? self::DEFAULT_AUTHOR;
 
         parent::addRecord($level, $message, $context);
 
