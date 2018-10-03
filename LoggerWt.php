@@ -23,6 +23,7 @@ class LoggerWt extends Logger
     const CONTEXT_FINISH_LOGGING = 'finish_logging'; // ag: Context flag for getting additional information from processors while destructing
 
     const TAG_LOGGER_NAME = 'logger';
+    const TAG_PARTITION = 'partition';
 
     const PROCESS_STATUS_RETRY = 'retry';
 
@@ -36,6 +37,26 @@ class LoggerWt extends Logger
     public function __destruct()
     {
         $this->debug('Finish logging', [self::CONTEXT_FINISH_LOGGING => true]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addRecord($level, $message, array $context = null)
+    {
+        $context = $context ?? [];
+        $context[self::CONTEXT_AUTHOR] = $context[self::CONTEXT_AUTHOR] ?? self::DEFAULT_AUTHOR;
+
+        parent::addRecord($level, $message, $context);
+
+        foreach ($this->handlers as $handler) {
+            if ($handler instanceof Handler\RavenHandler) {
+                if ($handler->isHandling(['level' => $level])) {
+                    // vdm: делаем переликновку между дампами в sentry в логами приложения @since #WTA-897
+                    $this->warning('process=dump, status=sent, target=sentry, target=raven, event_id=' . $this->getLastRavenEventID());
+                }
+            }
+        }
     }
 
     /**
