@@ -47,6 +47,20 @@ class RavenHandler extends MonologRavenHandler
     protected $user;
 
     /**
+     * {@inheritdoc}
+     */
+    public function __construct(Raven_Client $ravenClient, $level = null, $bubble = null, $release = null, $user = null)
+    {
+        $this->release = $release;
+        $this->user = $user;
+
+        $level = $level ?? Logger::DEBUG;
+        $bubble = $bubble ?? true;
+
+        parent::__construct($ravenClient, $level, $bubble);
+    }
+
+    /**
      * @param array | string $user
      */
     public function setUser($user)
@@ -93,7 +107,7 @@ class RavenHandler extends MonologRavenHandler
             'timestamp' => date(DATE_W3C),
 
             'author'        => $record['context']['tags'][LoggerWt::CONTEXT_AUTHOR],
-            //'version'       => $this->release,
+            'version'       => $this->release,
             'level'      => $record['level'],
             'levelName'  => $record['level_name'],
             'context'  => $record['context'],
@@ -159,6 +173,7 @@ class RavenHandler extends MonologRavenHandler
             }
         }
 
+        $previousUserContext = false;
         if (!empty($record['context'])) {
             $options['extra']['context'] = $record['context'];
             if (!empty($record['context']['user'])) {
@@ -181,8 +196,8 @@ class RavenHandler extends MonologRavenHandler
 
         if (isset($record['context']['exception']) &&
             ($record['context']['exception'] instanceof \Exception || (PHP_VERSION_ID >= 70000 && $record['context']['exception'] instanceof \Throwable))) {
-                $options['extra']['message'] = $record['formatted'];
-                $this->ravenClient->captureException($record['context']['exception'], $options);
+            $options['extra']['message'] = $record['formatted'];
+            $this->ravenClient->captureException($record['context']['exception'], $options);
         } else {
             $this->ravenClient->captureMessage($record['formatted'], array(), $options, $record['context'][LoggerWt::CONTEXT_COLLECT_TRACE] ?? false);
         }
