@@ -28,7 +28,13 @@ class TagCollectorProcessor
      */
     public function addTags(array $tags = null)
     {
-        $this->tags = array_merge($this->tags, (array) $tags);
+        foreach ((array) $tags as $key => $value) {
+            if (is_numeric($key)) {
+                $key = $value;
+                $value = true;
+            }
+            $this->tags[$key] = $value;
+        }
     }
 
     /**
