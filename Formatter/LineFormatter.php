@@ -14,12 +14,13 @@ class LineFormatter extends MonologLineFormatter
      */
     public function __construct($format = null, $dateFormat = null, $allowInlineLineBreaks = null, $ignoreEmptyContextAndExtra = null)
     {
-        $format = $format ?? "%start_tag%[%datetime%] %level_abbr% %logger_name%%end_tag%  %message% %context% %extra.operations%\n";
-        $dateFormat = $dateFormat ?? 'd M y H:i:s e';
+        $format = $format ?? "%start_tag%%datetime%%level_abbr%%end_tag%%message% %context% %logger_info% %extra.operations%\n";
         $allowInlineLineBreaks = $allowInlineLineBreaks ?? true;
         $ignoreEmptyContextAndExtra = $ignoreEmptyContextAndExtra ?? true;
 
         parent::__construct($format, $dateFormat, $allowInlineLineBreaks, $ignoreEmptyContextAndExtra);
+
+        $this->dateFormat = $dateFormat ?? '[d M y H:i:s e] ';
     }
 
     /**
@@ -58,10 +59,10 @@ class LineFormatter extends MonologLineFormatter
         $levelAbbr = '';
         switch (true) {
             case $record['level'] === \Monolog\Logger::WARNING:
-                $levelAbbr = '[W]';
+                $levelAbbr = '[W] ';
                 break;
             case $record['level'] >= \Monolog\Logger::ERROR:
-                $levelAbbr = '[E]';
+                $levelAbbr = '[E] ';
                 break;
         }
 
@@ -77,16 +78,14 @@ class LineFormatter extends MonologLineFormatter
      */
     protected function formatLoggerName($record)
     {
-        $loggerName = [];
+        $record['logger_info'] = '';
         if (isset($record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_LOGGER_NAME])) {
-            $loggerName['logger'] = $record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_LOGGER_NAME];
+            $record['logger_info'] .= "logger={$record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_LOGGER_NAME]}";
         }
 
         if (isset($record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_PARTITION])) {
-            $loggerName['partition'] = $record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_PARTITION];
+            $record['logger_info'] .= " partition={$record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_PARTITION]}";
         }
-
-        $record['logger_name'] = parent::stringify(LoggerWt::arrayToString($loggerName));
 
         return $record;
     }
