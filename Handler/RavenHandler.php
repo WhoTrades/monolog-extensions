@@ -125,7 +125,9 @@ class RavenHandler extends MonologRavenHandler
             'hostname'   => gethostname(),
         ];
 
-        $options['extra']['TRACE'] = $this->getStackTrace($record);
+        if (!empty($record['context'][LoggerWt::CONTEXT_COLLECT_TRACE])) {
+            $options['extra']['TRACE'] = $this->getStackTrace($record);
+        }
 
         if (class_exists('ApplicationException')) {
             // possible exception stack
