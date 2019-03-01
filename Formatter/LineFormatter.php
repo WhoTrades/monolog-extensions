@@ -14,7 +14,7 @@ class LineFormatter extends MonologLineFormatter
      */
     public function __construct($format = null, $dateFormat = null, $allowInlineLineBreaks = null, $ignoreEmptyContextAndExtra = null)
     {
-        $format = $format ?? "%start_tag%%datetime%%level_abbr%%end_tag%%message% %context% %logger_info% %extra.operations%\n";
+        $format = $format ?? "%datetime%%level_abbr%%message% %context% %logger_info% %extra.operations%\n";
         $allowInlineLineBreaks = $allowInlineLineBreaks ?? true;
         $ignoreEmptyContextAndExtra = $ignoreEmptyContextAndExtra ?? true;
 
