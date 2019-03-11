@@ -47,7 +47,7 @@ class SyslogHandler extends MonologSyslogHandler
      */
     protected function getDefaultFormatter()
     {
-        return new \whotrades\MonologExtensions\Formatter\LineFormatter();
+        return new \whotrades\MonologExtensions\Formatter\LineFormatter(null, '');
     }
 
     /**
