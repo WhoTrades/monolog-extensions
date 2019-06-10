@@ -12,35 +12,6 @@ use Raven_Client;
 
 class RavenHandler extends MonologRavenHandler
 {
-    //******************************************************************************************************************
-    // Copy-paste from MonologRavenHandler
-    // Reason: These properties are private, but we need use them in this class
-    //
-
-    /**
-     * Translates Monolog log levels to Raven log levels.
-     */
-    private $logLevels = array(
-        Logger::DEBUG     => Raven_Client::DEBUG,
-        Logger::INFO      => Raven_Client::INFO,
-        Logger::NOTICE    => Raven_Client::INFO,
-        Logger::WARNING   => Raven_Client::WARNING,
-        Logger::ERROR     => Raven_Client::ERROR,
-        Logger::CRITICAL  => Raven_Client::FATAL,
-        Logger::ALERT     => Raven_Client::FATAL,
-        Logger::EMERGENCY => Raven_Client::FATAL,
-    );
-
-    /**
-     * @var string should represent the current version of the calling
-     *             software. Can be any string (git commit, version number)
-     */
-    private $release;
-
-    //
-    // Copy-paste from MonologRavenHandler
-    //******************************************************************************************************************
-
     /**
      * @var array | string | null
      */
