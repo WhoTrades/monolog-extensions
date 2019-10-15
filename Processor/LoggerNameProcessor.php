@@ -30,6 +30,8 @@ class LoggerNameProcessor
      */
     public function __invoke(array $record)
     {
+        $loggerName = isset($record['channel']) ? "{$record['channel']}:{$this->loggerName}" : $this->loggerName;
+
         if (!isset($record['extra'][LoggerWt::CONTEXT_TAGS])) {
             $record['extra'][LoggerWt::CONTEXT_TAGS] = [];
         }
@@ -37,10 +39,10 @@ class LoggerNameProcessor
         // ag: Add tag logger to extra
         if (isset($record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_LOGGER_NAME])) {
             // ag: Change existed name
-            $record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_LOGGER_NAME] = $this->loggerName;
+            $record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_LOGGER_NAME] = $loggerName;
         } else {
             // ag: Set logger name to beginning of tags array
-            $record['extra'][LoggerWt::CONTEXT_TAGS] = [LoggerWt::TAG_LOGGER_NAME => $this->loggerName] + $record['extra'][LoggerWt::CONTEXT_TAGS];
+            $record['extra'][LoggerWt::CONTEXT_TAGS] = [LoggerWt::TAG_LOGGER_NAME => $loggerName] + $record['extra'][LoggerWt::CONTEXT_TAGS];
         }
 
         return $record;
