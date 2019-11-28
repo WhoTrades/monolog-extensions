@@ -6,6 +6,7 @@ namespace whotrades\MonologExtensions;
 
 use Monolog\Logger;
 use whotrades\MonologExtensions\Handler;
+use whotrades\MonologExtensions\Processor;
 
 class LoggerWt extends Logger
 {
@@ -45,6 +46,14 @@ class LoggerWt extends Logger
     public function addRecord($level, $message, array $context = null)
     {
         $context = $context ?? [];
+
+        if (isset($context[LoggerWt::CONTEXT_TAGS])) {
+            foreach ($this->processors as $processor) {
+                if ($processor instanceof Processor\TagCollectorProcessor) {
+                    $processor->addTags($context[LoggerWt::CONTEXT_TAGS]);
+                }
+            }
+        }
 
         parent::addRecord($level, $message, $context);
 
