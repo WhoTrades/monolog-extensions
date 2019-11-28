@@ -47,15 +47,25 @@ class LoggerWt extends Logger
     {
         $context = $context ?? [];
 
-        if (isset($context[LoggerWt::CONTEXT_TAGS])) {
-            foreach ($this->processors as $processor) {
-                if ($processor instanceof Processor\TagCollectorProcessor) {
-                    $processor->addTags($context[LoggerWt::CONTEXT_TAGS]);
+        if (!parent::addRecord($level, $message, $context)) {
+            // ag: Force tagging
+            if (isset($context[LoggerWt::CONTEXT_TAGS])) {
+                foreach ($this->processors as $processor) {
+                    if ($processor instanceof Processor\TagCollectorProcessor) {
+                        $processor->addTags($context[LoggerWt::CONTEXT_TAGS]);
+                    }
+                }
+            }
+
+            // ag: Force process operations
+            if (isset($context[LoggerWt::CONTEXT_OPERATIONS])) {
+                foreach ($this->processors as $processor) {
+                    if ($processor instanceof Processor\OperationProcessor) {
+                        $processor(['context' => $context]);
+                    }
                 }
             }
         }
-
-        parent::addRecord($level, $message, $context);
 
         foreach ($this->handlers as $handler) {
             if ($handler instanceof Handler\RavenHandler) {
