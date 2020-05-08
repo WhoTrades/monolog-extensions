@@ -4,9 +4,10 @@
  */
 namespace whotrades\MonologExtensions\Processor;
 
+use Monolog\Processor\ProcessorInterface;
 use whotrades\MonologExtensions\LoggerWt;
 
-class LoggerNameProcessor
+class LoggerNameProcessor implements ProcessorInterface
 {
     const GENERATED_NAME_LENGTH = 10;
 
@@ -24,9 +25,7 @@ class LoggerNameProcessor
     }
 
     /**
-     * @param array $record
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function __invoke(array $record)
     {

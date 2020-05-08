@@ -4,10 +4,11 @@
  */
 namespace whotrades\MonologExtensions\Processor;
 
+use Monolog\Processor\ProcessorInterface;
 use whotrades\MonologExtensions\LoggerWt;
 use whotrades\MonologExtensions\Item;
 
-class OperationProcessor
+class OperationProcessor implements ProcessorInterface
 {
     const ACTION_START = 'start';
     const ACTION_STOP = 'stop';
@@ -20,9 +21,7 @@ class OperationProcessor
     protected $operations = [];
 
     /**
-     * @param  array $record
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function __invoke(array $record)
     {

@@ -4,9 +4,10 @@
  */
 namespace whotrades\MonologExtensions\Processor;
 
+use Monolog\Processor\ProcessorInterface;
 use whotrades\MonologExtensions\LoggerWt;
 
-class TagCollectorProcessor
+class TagCollectorProcessor implements ProcessorInterface
 {
     /*
      * array
@@ -46,9 +47,7 @@ class TagCollectorProcessor
     }
 
     /**
-     * @param array $record
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function __invoke(array $record)
     {

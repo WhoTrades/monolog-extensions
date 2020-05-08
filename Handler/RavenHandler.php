@@ -10,7 +10,7 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 use Raven_Client;
 
-class RavenHandler extends MonologRavenHandler
+class RavenHandler extends MonologRavenHandler implements SentryHandlerInterface
 {
     /**
      * @var array | string | null

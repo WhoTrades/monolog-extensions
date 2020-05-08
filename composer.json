@@ -1,7 +1,12 @@
 {
   "name": "whotrades/monolog-extensions",
   "type": "library",
-  "author": "Anton Gorlanov (antonxacc@gmail.com)",
+  "authors": [
+      {
+          "name": "Anton Gorlanov",
+          "email": "antonxacc@gmail.com"
+      }
+  ],
   "description": "Monolog extensions",
   "autoload": {
     "psr-4": {
@@ -9,7 +14,8 @@
     }
   },
   "require": {
-    "php": ">=7.0",
-    "monolog/monolog": "^1.24"
+    "php": "^7.1",
+    "monolog/monolog": "^1.25",
+    "sentry/sentry": "^2.3"
   }
 }

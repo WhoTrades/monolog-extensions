@@ -22,6 +22,8 @@ class LoggerWt extends Logger
     const CONTEXT_TAGS = 'tags'; // ag: Tags for collecting with Processor\TagCollectorProcessor
     const CONTEXT_OPERATIONS = 'operations'; // ag: Operations for processing with Processor\OperationProcessor
     const CONTEXT_FINISH_LOGGING = 'finish_logging'; // ag: Context flag for getting additional information from processors while destructing
+    const CONTEXT_EXTRA_USER = 'user'; // ag: Context extra flag for collecting user information
+    const CONTEXT_FINGERPRINT = 'fingerprint'; // ag: Context flag for collecting user fingerprint
 
     const TAG_LOGGER_NAME = 'logger';
     const TAG_PARTITION = 'partition';
@@ -68,24 +70,36 @@ class LoggerWt extends Logger
         }
 
         foreach ($this->handlers as $handler) {
-            if ($handler instanceof Handler\RavenHandler) {
+            if ($handler instanceof Handler\SentryHandlerInterface) {
                 if ($handler->isHandling(['level' => $level])) {
                     // vdm: делаем переликновку между дампами в sentry в логами приложения @since #WTA-897
-                    $this->warning('process=dump, status=sent, target=sentry, target=raven, event_id=' . $this->getLastRavenEventID());
+                    $this->warning('process=dump, status=sent, target=sentry, event_id=' . $this->getLastSentryEventID());
                 }
             }
         }
     }
 
     /**
+     * @deprecated Use getLastSentryEventID instead
+     *
      * Return the last captured Raven event's ID or null if none available.
      *
      * @return string | null
      */
     public function getLastRavenEventID()
     {
+        return $this->getLastSentryEventID();
+    }
+
+    /**
+     * Return the last captured Raven event's ID or null if none available.
+     *
+     * @return string|null
+     */
+    public function getLastSentryEventID()
+    {
         foreach ($this->handlers as $handler) {
-            if ($handler instanceof Handler\RavenHandler) {
+            if ($handler instanceof Handler\SentryHandlerInterface) {
                 return $handler->getLastEventID();
             }
         }
