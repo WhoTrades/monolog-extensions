@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace whotrades\MonologExtensions\Handler;
 
-use Monolog\Handler\HandlerWrapper;
 use Monolog\Formatter\FormatterInterface;
 use Sentry\Monolog\Handler as SentryHandlerGeneric;
 use Sentry\State\HubInterface;
@@ -18,12 +17,17 @@ use Sentry\State\Scope;
 use whotrades\MonologExtensions\LoggerWt;
 use whotrades\MonologExtensions\Formatter\LineFormatter;
 
-class SentryHandler extends HandlerWrapper implements SentryHandlerInterface
+class SentryHandler extends AbstractProcessingHandlerWrapper implements SentryHandlerInterface
 {
     const EXTRA_ENVIRONMENT = 'ENVIRONMENT';
     const EXTRA_ERROR = 'ERROR';
     const TAG_LOGGER_ID = 'logger_id';
 
+
+    /**
+     * @var SentryHandlerGeneric
+     */
+    protected $handler;
 
     /**
      * @var HubInterface
@@ -50,7 +54,7 @@ class SentryHandler extends HandlerWrapper implements SentryHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(array $record): void
+    protected function preHandle(array $record): array
     {
         $this->trySetAttachStacktrace($record);
         $this->hub->configureScope(function (Scope $scope) use (&$record): void {
@@ -67,7 +71,7 @@ class SentryHandler extends HandlerWrapper implements SentryHandlerInterface
             $this->setExtraErrorToScope($scope, $record);
         });
 
-        $this->handler->handle($record);
+        return $record;
     }
 
     /**
@@ -105,8 +109,10 @@ class SentryHandler extends HandlerWrapper implements SentryHandlerInterface
     /**
      * @param Scope $scope
      * @param array $record
+     *
+     * @return void
      */
-    private function trySetTagLoggerId(Scope $scope, array $record)
+    private function trySetTagLoggerId(Scope $scope, array $record): void
     {
         if ($this->hasTagLoggerId($record)) {
             $scope->setTag(self::TAG_LOGGER_ID, $this->getTagLoggerId($record));
