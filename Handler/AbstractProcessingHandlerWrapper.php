@@ -23,6 +23,10 @@ abstract class AbstractProcessingHandlerWrapper extends HandlerWrapper
      */
     public function handle(array $record): void
     {
+        if (!$this->isHandling($record)) {
+            return;
+        }
+
         $this->popProcessorsFromWrappedHandler();
         $record = $this->processRecord($record);
         $record = $this->preHandle($record);
