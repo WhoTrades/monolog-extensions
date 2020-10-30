@@ -69,6 +69,9 @@ class SentryHandler extends AbstractProcessingHandlerWrapper implements SentryHa
             }
             $this->setExtraEnvironmentToScope($scope);
             $this->setExtraErrorToScope($scope, $record);
+            // Compatibility with 2.x sentry-php library
+            $this->setExtraToScope($scope, $record);
+            $this->setTagsToScope($scope, $record);
         });
 
         return $record;
@@ -81,7 +84,7 @@ class SentryHandler extends AbstractProcessingHandlerWrapper implements SentryHa
      */
     public function getLastEventID(): ?string
     {
-        return $this->hub->getLastEventID();
+        return (string) $this->hub->getLastEventID();
     }
 
     /**
@@ -189,6 +192,32 @@ class SentryHandler extends AbstractProcessingHandlerWrapper implements SentryHa
             'context' => $record['context'],
             'possible last error' => error_get_last(),
         ];
+    }
+
+    /**
+     * @param Scope $scope
+     * @param array $record
+     */
+    private function setExtraToScope(Scope $scope, array $record): void
+    {
+        if (isset($record['context']['extra']) && \is_array($record['context']['extra'])) {
+            foreach ($record['context']['extra'] as $key => $value) {
+                $scope->setExtra((string) $key, $value);
+            }
+        }
+    }
+
+    /**
+     * @param Scope $scope
+     * @param array $record
+     */
+    private function setTagsToScope(Scope $scope, array $record): void
+    {
+        if (isset($record['context']['tags']) && \is_array($record['context']['tags'])) {
+            foreach ($record['context']['tags'] as $key => $value) {
+                $scope->setTag($key, $value);
+            }
+        }
     }
 
     /**
