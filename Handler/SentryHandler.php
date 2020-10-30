@@ -84,7 +84,7 @@ class SentryHandler extends AbstractProcessingHandlerWrapper implements SentryHa
      */
     public function getLastEventID(): ?string
     {
-        return $this->hub->getLastEventID();
+        return (string) $this->hub->getLastEventID();
     }
 
     /**
