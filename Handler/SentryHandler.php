@@ -70,8 +70,8 @@ class SentryHandler extends AbstractProcessingHandlerWrapper implements SentryHa
             $this->setExtraEnvironmentToScope($scope);
             $this->setExtraErrorToScope($scope, $record);
             // Compatibility with 2.x sentry-php library
-            $this->setExtraToScope($scope, $record);
-            $this->setTagsToScope($scope, $record);
+            //$this->setExtraToScope($scope, $record);
+            //$this->setTagsToScope($scope, $record);
         });
 
         return $record;
