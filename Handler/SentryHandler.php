@@ -22,6 +22,7 @@ class SentryHandler extends AbstractProcessingHandlerWrapper implements SentryHa
     const EXTRA_ENVIRONMENT = 'ENVIRONMENT';
     const EXTRA_ERROR = 'ERROR';
     const TAG_LOGGER_ID = 'logger_id';
+    const TAG_REQUEST_ID = 'request_id';
 
 
     /**
@@ -59,6 +60,7 @@ class SentryHandler extends AbstractProcessingHandlerWrapper implements SentryHa
         $this->trySetAttachStacktrace($record);
         $this->hub->configureScope(function (Scope $scope) use (&$record): void {
             $this->trySetTagLoggerId($scope, $record);
+            $this->trySetTagRequestId($scope, $record);
             if ($this->hasUserData($record)) {
                 $scope->setUser($this->getUserData($record));
                 $record = $this->unsetUserData($record);
@@ -144,6 +146,41 @@ class SentryHandler extends AbstractProcessingHandlerWrapper implements SentryHa
         }
 
         return $record['extra'][LoggerWt::CONTEXT_TAGS][LoggerWt::TAG_LOGGER_NAME];
+    }
+
+    /**
+     * @param Scope $scope
+     * @param array $record
+     */
+    private function trySetTagRequestId(Scope $scope, array $record): void
+    {
+        if ($this->hasTagRequestId($record)) {
+            $scope->setTag('request_id', $this->getTagRequestId($record));
+        }
+    }
+
+    /**
+     * @param array $record
+     *
+     * @return bool
+     */
+    private function hasTagRequestId(array $record): bool
+    {
+        return isset($record['extra'][LoggerWt::CONTEXT_TAGS][self::TAG_REQUEST_ID]);
+    }
+
+    /**
+     * @param array $record
+     *
+     * @return string
+     */
+    private function getTagRequestId(array $record): string
+    {
+        if (!$this->hasTagRequestId($record)) {
+            return "Doesn't have request_id";
+        }
+
+        return $record['extra'][LoggerWt::CONTEXT_TAGS][self::TAG_REQUEST_ID];
     }
 
     /**
