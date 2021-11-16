@@ -4,6 +4,7 @@
  */
 namespace whotrades\MonologExtensions\Handler;
 
+use Monolog\Formatter\FormatterInterface;
 use whotrades\MonologExtensions\LoggerWt;
 use Monolog\Handler\SyslogHandler as MonologSyslogHandler;
 
@@ -45,7 +46,7 @@ class SyslogHandler extends MonologSyslogHandler
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultFormatter()
+    protected function getDefaultFormatter(): FormatterInterface
     {
         return new \whotrades\MonologExtensions\Formatter\LineFormatter(null, '');
     }
