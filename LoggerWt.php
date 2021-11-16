@@ -45,7 +45,7 @@ class LoggerWt extends Logger
     /**
      * {@inheritdoc}
      */
-    public function addRecord($level, $message, array $context = null)
+    public function addRecord(int $level, string $message, array $context = []): bool
     {
         $context = $context ?? [];
 
