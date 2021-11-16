@@ -27,7 +27,7 @@ class SyslogHandler extends MonologSyslogHandler
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         $identOld = null;
         if (isset($_ENV[self::ENV_VAR_TOOL_LOG_IDENT])) {

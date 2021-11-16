@@ -21,7 +21,7 @@ abstract class AbstractProcessingHandlerWrapper extends HandlerWrapper
     /**
      * {@inheritdoc}
      */
-    public function handle(array $record): void
+    public function handle(array $record): bool
     {
         if (!$this->isHandling($record)) {
             return;
