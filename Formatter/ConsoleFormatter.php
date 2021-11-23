@@ -21,7 +21,7 @@ class ConsoleFormatter extends LineFormatter
     /**
      * {@inheritdoc}
      */
-    public function format(array $record)
+    public function format(array $record): string
     {
         if ($record['level'] >= LoggerWt::ERROR) {
             $record['start_tag'] = '<error>';

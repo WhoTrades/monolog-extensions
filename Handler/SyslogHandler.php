@@ -4,6 +4,8 @@
  */
 namespace whotrades\MonologExtensions\Handler;
 
+use Monolog\Formatter\FormatterInterface;
+use Monolog\Logger;
 use whotrades\MonologExtensions\LoggerWt;
 use Monolog\Handler\SyslogHandler as MonologSyslogHandler;
 
@@ -14,7 +16,7 @@ class SyslogHandler extends MonologSyslogHandler
     /**
      * {@inheritdoc}
      */
-    public function __construct($ident, $facility = null, $level = null, $bubble = null, $logopts = null)
+    public function __construct($ident, $facility = LOG_USER, $level = Logger::DEBUG, bool $bubble = true, int $logopts = LOG_PID)
     {
         // ag: Try to redefine level by verbosity for tools
         if (php_sapi_name() === 'cli') {
@@ -27,7 +29,7 @@ class SyslogHandler extends MonologSyslogHandler
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         $identOld = null;
         if (isset($_ENV[self::ENV_VAR_TOOL_LOG_IDENT])) {
@@ -45,7 +47,7 @@ class SyslogHandler extends MonologSyslogHandler
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultFormatter()
+    protected function getDefaultFormatter(): FormatterInterface
     {
         return new \whotrades\MonologExtensions\Formatter\LineFormatter(null, '');
     }

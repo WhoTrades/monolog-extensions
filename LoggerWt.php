@@ -45,11 +45,11 @@ class LoggerWt extends Logger
     /**
      * {@inheritdoc}
      */
-    public function addRecord($level, $message, array $context = null)
+    public function addRecord(int $level, string $message, array $context = []): bool
     {
         $context = $context ?? [];
 
-        if (!parent::addRecord($level, $message, $context)) {
+        if (!$res = parent::addRecord($level, $message, $context)) {
             // ag: Force tagging
             if (isset($context[LoggerWt::CONTEXT_TAGS])) {
                 foreach ($this->processors as $processor) {
@@ -77,6 +77,8 @@ class LoggerWt extends Logger
                 }
             }
         }
+
+        return $res;
     }
 
     /**

@@ -26,7 +26,7 @@ class LineFormatter extends MonologLineFormatter
     /**
      * {@inheritdoc}
      */
-    public function format(array $record)
+    public function format(array $record): string
     {
         $record = $this->formatLevelAbbr($record);
         $record = $this->formatLoggerName($record);
@@ -107,7 +107,7 @@ class LineFormatter extends MonologLineFormatter
     /**
      * {@inheritdoc}
      */
-    protected function normalizeException($e)
+    protected function normalizeException(\Throwable $e, int $depth = 0): string
     {
         $exceptionInfo = parent::normalizeException($e);
 
