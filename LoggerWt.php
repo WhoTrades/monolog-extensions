@@ -4,6 +4,7 @@
  */
 namespace whotrades\MonologExtensions;
 
+use Monolog\DateTimeImmutable;
 use Monolog\Logger;
 use whotrades\MonologExtensions\Handler;
 use whotrades\MonologExtensions\Processor;
@@ -45,11 +46,11 @@ class LoggerWt extends Logger
     /**
      * {@inheritdoc}
      */
-    public function addRecord(int $level, string $message, array $context = []): bool
+    public function addRecord(int $level, string $message, array $context = [], DateTimeImmutable $datetime = null): bool
     {
         $context = $context ?? [];
 
-        if (!$res = parent::addRecord($level, $message, $context)) {
+        if (!$res = parent::addRecord($level, $message, $context, $datetime)) {
             // ag: Force tagging
             if (isset($context[LoggerWt::CONTEXT_TAGS])) {
                 foreach ($this->processors as $processor) {
